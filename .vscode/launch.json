@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Back",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": ".venv/bin/python manage.py runserver 127.0.0.1:8000",
+      "cwd": "${workspaceFolder}/back"
+    },
+    {
+      "name": "Front",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 3000",
+      "cwd": "${workspaceFolder}/front"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Start",
+      "configurations": ["Back", "Front"],
+      "stopAll": true
+    }
+  ]
+}
