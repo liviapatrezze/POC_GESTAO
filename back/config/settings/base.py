@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "apps.health.apps.HealthConfig",
+    "apps.hello.apps.HelloConfig",
     "apps.items.apps.ItemsConfig",
 ]
 

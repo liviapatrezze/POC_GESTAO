@@ -8,12 +8,14 @@ import type { Item } from "@/lib/types";
 
 type ItemBoardProps = {
   initialHealth: string;
+  initialHello: string;
   initialItems: Item[];
   initialError: string;
 };
 
 export function ItemBoard({
   initialHealth,
+  initialHello,
   initialItems,
   initialError,
 }: ItemBoardProps) {
@@ -49,6 +51,7 @@ export function ItemBoard({
     <main className="page">
       <header>
         <h1>POC Gestão</h1>
+        {initialHello ? <p className="hello">{initialHello}</p> : null}
         <p>
           API: <span className="health">{initialHealth}</span>
         </p>

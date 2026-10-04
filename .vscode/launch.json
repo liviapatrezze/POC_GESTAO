@@ -2,10 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Postgres",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "docker compose up",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "Back",
       "type": "node-terminal",
       "request": "launch",
-      "command": ".venv/bin/python manage.py runserver 127.0.0.1:8000",
+      "command": "until docker compose -f ../docker-compose.yml exec -T postgres pg_isready -U poc -d poc_gestao; do sleep 1; done && .venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver 127.0.0.1:8000",
       "cwd": "${workspaceFolder}/back"
     },
     {
@@ -19,7 +26,7 @@
   "compounds": [
     {
       "name": "Start",
-      "configurations": ["Back", "Front"],
+      "configurations": ["Postgres", "Back", "Front"],
       "stopAll": true
     }
   ]
