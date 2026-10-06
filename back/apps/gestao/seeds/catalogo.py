@@ -1,0 +1,93 @@
+TurmaPlano = tuple[int, int, str, str, str, list[int], bool, int | None]
+
+ESPORTES = [
+    ("Futebol", "Coletivo", "Treino de campo para iniciantes e intermediários."),
+    ("Futsal", "Coletivo", "Aulas em quadra coberta, à tarde e à noite."),
+    ("Natação", "Aquático", "Da adaptação à piscina até o nado contínuo."),
+    ("Vôlei", "Coletivo", "Fundamentos, saque e jogo em equipe."),
+    ("Tênis", "Raquete", "Aulas em dupla na quadra externa."),
+    ("Basquete", "Coletivo", "Treino técnico e coletivo."),
+]
+
+PROFESSORES = [
+    ("Camila Rocha", "16991110001", "camila.rocha@sportbridge.local", True),
+    ("Diego Martins", "16991110002", "diego.martins@sportbridge.local", True),
+    ("Helena Duarte", "16991110003", "helena.duarte@sportbridge.local", True),
+    ("Rafael Nogueira", "16991110004", "rafael.nogueira@sportbridge.local", True),
+    ("Bruno Alves", "16991110005", "bruno.alves@sportbridge.local", True),
+    ("Patrícia Lima", "16991110006", "patricia.lima@sportbridge.local", True),
+    ("Lucas Pires", "16991110007", "lucas.pires@sportbridge.local", False),
+]
+
+NOMES = [
+    "Ana Beatriz Campos",
+    "Arthur Henrique Dias",
+    "Beatriz Oliveira Santos",
+    "Caio Eduardo Ferreira",
+    "Daniela Souza Gomes",
+    "Eduardo Pereira Nunes",
+    "Fernanda Alves Ribeiro",
+    "Gabriel Martins Teixeira",
+    "Isabela Cristina Moraes",
+    "João Pedro Carvalho",
+    "Larissa Fernanda Pinto",
+    "Miguel Augusto Ramos",
+    "Natália Vieira Borges",
+    "Otávio Luiz Cardoso",
+    "Paula Regina Mendes",
+    "Pedro Henrique Barbosa",
+    "Rafaela Gomes Azevedo",
+    "Samuel Costa Freitas",
+    "Sofia Martins Rezende",
+    "Thiago Almeida Cunha",
+    "Valentina Rocha Dias",
+    "Vinícius Pereira Lopes",
+    "Yasmin Duarte Farias",
+    "Alice Moreira Campos",
+    "Bernardo Silva Prado",
+    "Cecília Andrade Melo",
+    "Davi Luiz Nogueira",
+    "Elisa Ferreira Pires",
+    "Enzo Gabriel Rocha",
+    "Giovanna Lima Torres",
+    "Heitor Souza Braga",
+    "Íris Beatriz Campos",
+    "Laura Martins Duarte",
+    "Lucas Gabriel Pinto",
+    "Manuela Costa Reis",
+    "Nicolas Almeida Dias",
+    "Olívia Pereira Santos",
+    "Pietro Henrique Alves",
+    "Marina Duarte Lopes",
+    "Renato Vieira Cardoso",
+]
+
+BAIRROS = ["Centro", "Jardim Santa Rita", "Vila Maria", "Parque São João", "Jardim Europa"]
+RUAS = [
+    "Rua Sete de Setembro",
+    "Avenida Brasil",
+    "Rua XV de Novembro",
+    "Rua Major José Inácio",
+    "Avenida dos Esportes",
+]
+
+TURMAS: list[TurmaPlano] = [
+    (0, 1, "SEG", "18:00", "19:00", [0, 1, 2, 3, 4, 5, 6, 7], True, None),
+    (0, 1, "QUA", "18:00", "19:00", [0, 1, 2, 3, 4, 5, 6, 7], True, None),
+    (0, 1, "SAB", "09:00", "10:00", [0, 1, 2, 8, 9, 10], True, None),
+    (1, 4, "TER", "19:00", "20:00", [11, 12, 13, 14, 15, 16, 17], True, None),
+    (1, 4, "QUI", "19:00", "20:00", [11, 12, 13, 14, 15, 16, 17], True, None),
+    (2, 0, "SEG", "07:00", "08:00", [18, 19, 20, 21, 22, 23, 38], True, None),
+    (2, 0, "QUA", "07:00", "08:00", [18, 19, 20, 21, 22, 23, 38], True, None),
+    (2, 0, "SEX", "07:00", "08:00", [18, 19, 20, 21, 22, 23], True, None),
+    (2, 5, "TER", "16:00", "17:00", [24, 25, 26, 27, 28, 39], True, None),
+    (2, 5, "QUI", "16:00", "17:00", [24, 25, 26, 27, 28, 39], True, None),
+    (3, 2, "TER", "18:00", "19:30", [8, 9, 29, 30, 31, 32], True, None),
+    (3, 2, "QUI", "18:00", "19:30", [8, 9, 29, 30, 31, 32], True, None),
+    (4, 3, "SEG", "16:00", "17:00", [4, 10, 33, 34, 35], True, None),
+    (4, 3, "QUA", "16:00", "17:00", [4, 10, 33, 34, 35], True, None),
+    (4, 3, "SAB", "10:00", "11:00", [33, 34, 35, 36], True, None),
+    (5, 4, "SEX", "18:00", "19:00", [6, 13, 31, 36, 37], True, None),
+    (5, 4, "SAB", "11:00", "12:00", [6, 13, 31, 36, 37], True, None),
+    (1, 6, "DOM", "08:00", "09:00", [2, 5, 15], False, 8),
+]

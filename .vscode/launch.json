@@ -12,14 +12,14 @@
       "name": "Back",
       "type": "node-terminal",
       "request": "launch",
-      "command": "until docker compose -f ../docker-compose.yml exec -T postgres pg_isready -U poc -d poc_gestao; do sleep 1; done && .venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver 127.0.0.1:8000",
+      "command": "(lsof -ti tcp:8000 | xargs kill) || true; until docker compose -f ../docker-compose.yml exec -T postgres pg_isready -U poc -d poc_gestao; do sleep 1; done && .venv/bin/python manage.py migrate && .venv/bin/python manage.py runserver 127.0.0.1:8000",
       "cwd": "${workspaceFolder}/back"
     },
     {
       "name": "Front",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm run dev -- --port 3000",
+      "command": "(lsof -ti tcp:3000 | xargs kill) || true; npm run dev -- --port 3000",
       "cwd": "${workspaceFolder}/front"
     }
   ],

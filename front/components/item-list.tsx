@@ -23,7 +23,7 @@ export function ItemList({ items, onDelete }: ItemListProps) {
               {new Date(item.criado_em).toLocaleString("pt-BR")}
             </time>
           </div>
-          <button type="button" onClick={() => void onDelete(item.id)}>
+          <button type="button" onClick={() => void onDelete(item.id)} aria-label={`Excluir ${item.titulo}`}>
             Excluir
           </button>
         </li>

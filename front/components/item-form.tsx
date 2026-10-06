@@ -29,7 +29,7 @@ export function ItemForm({ onCreate }: ItemFormProps) {
   }
 
   return (
-    <form className="item-form" onSubmit={handleSubmit}>
+    <form className="item-form" onSubmit={handleSubmit} aria-busy={pending}>
       <label>
         Título
         <input

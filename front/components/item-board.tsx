@@ -56,7 +56,7 @@ export function ItemBoard({
           API: <span className="health">{initialHealth}</span>
         </p>
       </header>
-      {error ? <p className="error">{error}</p> : null}
+      {error ? <p className="error" role="alert">{error}</p> : null}
       <section>
         <h2>Novo item</h2>
         <ItemForm onCreate={handleCreate} />

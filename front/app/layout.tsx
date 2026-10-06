@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,14 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "POC Gestão",
-  description: "Monolito Django e Next.js",
+  title: "POC Sistema Gestão",
+  description: "Alunos, esportes, horários, matrículas e frequência",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }
