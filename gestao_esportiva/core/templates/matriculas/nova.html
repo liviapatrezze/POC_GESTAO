@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Matrícula</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .descricao {
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            background-color: #2196f3;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .mensagem {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .sucesso {
+            color: #2e7d32;
+        }
+
+        .erro {
+            color: #c62828;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>Nova Matrícula</h1>
+
+        <p class="descricao">
+            Selecione o aluno, o esporte e o horário em que ele será matriculado.
+        </p>
+
+
+        <form id="form-matricula">
+
+            {% csrf_token %}
+
+
+            <!-- ================================================= -->
+            <!-- ALUNO -->
+            <!-- ================================================= -->
+
+            <label for="aluno">
+                Aluno
+            </label>
+
+            <select id="aluno" name="aluno_id" required>
+
+                <option value="">
+                    Carregando alunos...
+                </option>
+
+            </select>
+
+
+            <!-- ================================================= -->
+            <!-- ESPORTE -->
+            <!-- ================================================= -->
+
+            <label for="esporte">
+                Esporte
+            </label>
+
+            <select id="esporte" name="esporte_id" required>
+
+                <option value="">
+                    Carregando esportes...
+                </option>
+
+            </select>
+
+
+            <!-- ================================================= -->
+            <!-- HORÁRIO -->
+            <!-- ================================================= -->
+
+            <label for="horario">
+                Horário
+            </label>
+
+            <select id="horario" name="horario_id" required>
+
+                <option value="">
+                    Selecione primeiro um esporte
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Cadastrar matrícula
+            </button>
+
+        </form>
+
+
+        <div id="mensagem" class="mensagem"></div>
+
+
+        <a
+            href="/matriculas/"
+            class="voltar">
+            ← Voltar para matrículas
+        </a>
+
+    </div>
+
+
+    <script>
+
+        const alunoSelect =
+            document.getElementById("aluno");
+
+        const esporteSelect =
+            document.getElementById("esporte");
+
+        const horarioSelect =
+            document.getElementById("horario");
+
+        const mensagem =
+            document.getElementById("mensagem");
+
+
+        // =====================================================
+        // CARREGAR ALUNOS
+        // =====================================================
+
+        function carregarAlunos() {
+
+            fetch("/api/alunos-matricula/")
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Erro ao carregar alunos."
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    alunoSelect.innerHTML = `
+                        <option value="">
+                            Selecione um aluno
+                        </option>
+                    `;
+
+                    data.alunos.forEach(aluno => {
+
+                        const option =
+                            document.createElement("option");
+
+                        option.value =
+                            aluno.id;
+
+                        option.textContent =
+                            aluno.nome;
+
+                        alunoSelect.appendChild(
+                            option
+                        );
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alunoSelect.innerHTML = `
+                        <option value="">
+                            Erro ao carregar alunos
+                        </option>
+                    `;
+
+                });
+        }
+
+
+        // =====================================================
+        // CARREGAR ESPORTES
+        // =====================================================
+
+        function carregarEsportes() {
+
+            fetch("/api/esportes-matricula/")
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Erro ao carregar esportes."
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    esporteSelect.innerHTML = `
+                        <option value="">
+                            Selecione um esporte
+                        </option>
+                    `;
+
+                    data.esportes.forEach(esporte => {
+
+                        const option =
+                            document.createElement("option");
+
+                        option.value =
+                            esporte.id;
+
+                        option.textContent =
+                            esporte.nome;
+
+                        esporteSelect.appendChild(
+                            option
+                        );
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    esporteSelect.innerHTML = `
+                        <option value="">
+                            Erro ao carregar esportes
+                        </option>
+                    `;
+
+                });
+        }
+
+
+        // =====================================================
+        // CARREGAR HORÁRIOS DO ESPORTE SELECIONADO
+        // =====================================================
+
+        function carregarHorarios() {
+
+            const esporteId =
+                esporteSelect.value;
+
+
+            horarioSelect.innerHTML = `
+                <option value="">
+                    Carregando horários...
+                </option>
+            `;
+
+
+            if (!esporteId) {
+
+                horarioSelect.innerHTML = `
+                    <option value="">
+                        Selecione primeiro um esporte
+                    </option>
+                `;
+
+                return;
+            }
+
+
+            fetch(
+                "/api/horarios-matricula/?esporte_id="
+                + esporteId
+            )
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Erro ao carregar horários."
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    horarioSelect.innerHTML = `
+                        <option value="">
+                            Selecione um horário
+                        </option>
+                    `;
+
+
+                    if (data.horarios.length === 0) {
+
+                        horarioSelect.innerHTML = `
+                            <option value="">
+                                Nenhum horário disponível
+                            </option>
+                        `;
+
+                        return;
+                    }
+
+
+                    data.horarios.forEach(horario => {
+
+                        const option =
+                            document.createElement("option");
+
+                        option.value =
+                            horario.id;
+
+                        option.textContent =
+                            `${horario.professor} - ` +
+                            `${horario.dia_semana} - ` +
+                            `${horario.hora_inicio} às ` +
+                            `${horario.hora_fim}`;
+
+                        horarioSelect.appendChild(
+                            option
+                        );
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    horarioSelect.innerHTML = `
+                        <option value="">
+                            Erro ao carregar horários
+                        </option>
+                    `;
+
+                });
+        }
+
+
+        // =====================================================
+        // OBTER CSRF TOKEN
+        // =====================================================
+
+        function obterCsrfToken() {
+
+            return document
+                .querySelector(
+                    "[name=csrfmiddlewaretoken]"
+                )
+                .value;
+        }
+
+
+        // =====================================================
+        // CADASTRAR MATRÍCULA
+        // =====================================================
+
+        document
+            .getElementById("form-matricula")
+            .addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+                    mensagem.textContent = "";
+
+                    mensagem.className =
+                        "mensagem";
+
+
+                    const dados =
+                        new URLSearchParams();
+
+
+                    dados.append(
+                        "aluno_id",
+                        alunoSelect.value
+                    );
+
+
+                    dados.append(
+                        "horario_id",
+                        horarioSelect.value
+                    );
+
+
+                    fetch(
+                        "/api/matriculas/cadastrar/",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "X-CSRFToken":
+                                    obterCsrfToken()
+                            },
+
+                            body: dados
+                        }
+                    )
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        if (data.sucesso) {
+
+                            mensagem.textContent =
+                                "✅ " + data.mensagem;
+
+                            mensagem.className =
+                                "mensagem sucesso";
+
+
+                            document
+                                .getElementById(
+                                    "form-matricula"
+                                )
+                                .reset();
+
+
+                            horarioSelect.innerHTML = `
+                                <option value="">
+                                    Selecione primeiro um esporte
+                                </option>
+                            `;
+
+                        } else {
+
+                            mensagem.textContent =
+                                "❌ " + data.erro;
+
+                            mensagem.className =
+                                "mensagem erro";
+                        }
+
+                    })
+
+                    .catch(error => {
+
+                        console.error(error);
+
+                        mensagem.textContent =
+                            "❌ Ocorreu um erro ao cadastrar a matrícula.";
+
+                        mensagem.className =
+                            "mensagem erro";
+
+                    });
+
+                }
+            );
+
+
+        // =====================================================
+        // QUANDO O ESPORTE FOR ALTERADO
+        // =====================================================
+
+        esporteSelect.addEventListener(
+            "change",
+            carregarHorarios
+        );
+
+
+        // =====================================================
+        // INICIALIZAÇÃO
+        // =====================================================
+
+        carregarAlunos();
+
+        carregarEsportes();
+
+    </script>
+
+</body>
+
+</html>

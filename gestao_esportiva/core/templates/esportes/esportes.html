@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Esportes</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .esportes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .esporte {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            text-align: center;
+        }
+
+        .esporte img {
+            width: 180px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .sem-imagem {
+            width: 180px;
+            height: 140px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            border-radius: 8px;
+        }
+
+        .esporte h2 {
+            font-size: 20px;
+            margin-top: 15px;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Esportes cadastrados</h1>
+
+    <div class="esportes">
+
+        {% for esporte in esportes %}
+
+            <div class="esporte">
+
+                {% if esporte.imagem %}
+
+                    <img
+                        src="{{ esporte.imagem.url }}"
+                        alt="Imagem de {{ esporte.nome }}"
+                    >
+
+                {% else %}
+
+                    <div class="sem-imagem">
+                        Sem imagem
+                    </div>
+
+                {% endif %}
+
+                <h2>{{ esporte.nome }}</h2>
+
+                {% if esporte.categoria %}
+                    <p>{{ esporte.categoria }}</p>
+                {% endif %}
+
+                {% if esporte.descricao %}
+                    <p>{{ esporte.descricao }}</p>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+
+            <p>Nenhum esporte cadastrado.</p>
+
+        {% endfor %}
+
+    </div>
+
+    <a class="voltar" href="{% url 'lista_alunos' %}">
+        ← Voltar para alunos
+    </a>
+
+</body>
+
+</html>

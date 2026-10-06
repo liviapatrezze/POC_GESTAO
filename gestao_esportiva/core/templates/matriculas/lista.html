@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lista de Matrículas</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .descricao {
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        .foto-aluno {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+
+        .sem-foto {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .ativar {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .inativar {
+            background-color: #f44336;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .ativo {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .inativo {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        #mensagem {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <h1>Lista de Matrículas</h1>
+
+    <p class="descricao">
+        Consulte e gerencie as matrículas dos alunos nas modalidades esportivas.
+    </p>
+
+    <div id="mensagem">
+        Carregando matrículas...
+    </div>
+
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Foto</th>
+                <th>Aluno</th>
+                <th>Esporte</th>
+                <th>Professor</th>
+                <th>Dia</th>
+                <th>Horário</th>
+                <th>Status</th>
+                <th>Ação</th>
+            </tr>
+
+        </thead>
+
+
+        <tbody id="tabela-matriculas">
+        </tbody>
+
+    </table>
+
+
+    <script>
+
+        function carregarMatriculas() {
+
+            fetch("/api/matriculas/")
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    const tabela =
+                        document.getElementById("tabela-matriculas");
+
+                    const mensagem =
+                        document.getElementById("mensagem");
+
+
+                    tabela.innerHTML = "";
+
+                    mensagem.textContent = "";
+
+
+                    data.matriculas.forEach(matricula => {
+
+                        const linha =
+                            document.createElement("tr");
+
+
+                        let fotoHTML;
+
+
+                        if (matricula.foto) {
+
+                            fotoHTML = `
+                                <img
+                                    src="${matricula.foto}"
+                                    alt="Foto de ${matricula.aluno}"
+                                    class="foto-aluno"
+                                >
+                            `;
+
+                        } else {
+
+                            fotoHTML = `
+                                <div class="sem-foto">
+                                    Sem foto
+                                </div>
+                            `;
+                        }
+
+
+                        let statusHTML;
+
+                        let botaoHTML;
+
+
+                        if (matricula.ativo) {
+
+                            statusHTML = `
+                                <span class="ativo">
+                                    Ativo
+                                </span>
+                            `;
+
+                            botaoHTML = `
+                                <button
+                                    class="inativar"
+                                    onclick="alterarStatus(${matricula.id}, false)">
+                                    Inativar
+                                </button>
+                            `;
+
+                        } else {
+
+                            statusHTML = `
+                                <span class="inativo">
+                                    Inativo
+                                </span>
+                            `;
+
+                            botaoHTML = `
+                                <button
+                                    class="ativar"
+                                    onclick="alterarStatus(${matricula.id}, true)">
+                                    Ativar
+                                </button>
+                            `;
+                        }
+
+
+                        linha.innerHTML = `
+
+                            <td>
+                                ${fotoHTML}
+                            </td>
+
+                            <td>
+                                ${matricula.aluno}
+                            </td>
+
+                            <td>
+                                ${matricula.esporte}
+                            </td>
+
+                            <td>
+                                ${matricula.professor}
+                            </td>
+
+                            <td>
+                                ${matricula.dia_semana}
+                            </td>
+
+                            <td>
+                                ${matricula.hora_inicio}
+                                às
+                                ${matricula.hora_fim}
+                            </td>
+
+                            <td>
+                                ${statusHTML}
+                            </td>
+
+                            <td>
+                                ${botaoHTML}
+                            </td>
+
+                        `;
+
+
+                        tabela.appendChild(linha);
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    document.getElementById("mensagem").textContent =
+                        "Erro ao carregar as matrículas.";
+
+                });
+        }
+
+
+        function alterarStatus(matriculaId, ativo) {
+
+            const dados = new URLSearchParams();
+
+            dados.append("matricula_id", matriculaId);
+
+            dados.append("ativo", ativo);
+
+
+            fetch("/api/matriculas/status/", {
+
+                method: "POST",
+
+                body: dados
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                if (data.sucesso) {
+
+                    carregarMatriculas();
+
+                } else {
+
+                    alert(
+                        "Não foi possível alterar o status da matrícula."
+                    );
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                alert(
+                    "Ocorreu um erro ao alterar o status da matrícula."
+                );
+
+            });
+
+        }
+
+
+        carregarMatriculas();
+
+    </script>
+
+</body>
+
+</html>
